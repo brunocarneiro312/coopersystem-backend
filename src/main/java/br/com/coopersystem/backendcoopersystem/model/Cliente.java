@@ -26,13 +26,25 @@ public class Cliente {
     @Column(name = "CPF", length = 11, unique = true, nullable = false)
     private String cpf;
 
-    @OneToOne(mappedBy = "cliente")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "TB_CLIENTE_ENDERECO",
+            joinColumns = @JoinColumn(name = "ID_CLIENTE"),
+            inverseJoinColumns = @JoinColumn(name ="ID_ENDERECO"))
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "TB_CLIENTE_TELEFONE",
+            joinColumns = @JoinColumn(name = "ID_CLIENTE"),
+            inverseJoinColumns = @JoinColumn(name ="ID_TELEFONE"))
     private List<Telefone> telefones;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "TB_CLIENTE_EMAIL",
+            joinColumns = @JoinColumn(name = "ID_CLIENTE"),
+            inverseJoinColumns = @JoinColumn(name ="ID_EMAIL"))
     private List<Email> emails;
 
 }

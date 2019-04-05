@@ -1,13 +1,34 @@
 package br.com.coopersystem.backendcoopersystem.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "TB_ENDERECO")
 public class Endereco {
+
+    public Endereco(String cep, String logradouro, String bairro, String cidade, String uf, String complemento) {
+        this.cep = cep;
+        this.logradouro = logradouro;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
+        this.complemento = complemento;
+    }
+
+    public Endereco(String cep, String logradouro, String bairro, String cidade, String uf) {
+        this.cep = cep;
+        this.logradouro = logradouro;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_endereco")
@@ -33,8 +54,7 @@ public class Endereco {
     @Column(name = "COMPLEMENTO")
     private String complemento;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_CLIENTE")
+    @OneToOne(mappedBy = "endereco")
     private Cliente cliente;
 
 }
