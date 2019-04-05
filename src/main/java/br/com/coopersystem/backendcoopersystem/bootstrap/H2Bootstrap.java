@@ -4,6 +4,8 @@ import br.com.coopersystem.backendcoopersystem.enums.TipoTelefoneEnum;
 import br.com.coopersystem.backendcoopersystem.model.*;
 import br.com.coopersystem.backendcoopersystem.repository.ClienteRepository;
 import br.com.coopersystem.backendcoopersystem.repository.ContaRepository;
+import br.com.coopersystem.backendcoopersystem.service.ClienteService;
+import br.com.coopersystem.backendcoopersystem.service.ContaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -21,15 +23,16 @@ import java.util.List;
 @Component
 public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    private ContaRepository contaRepository;
+    private ContaService contaService;
 
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     private PasswordEncoder passwordEncoder;
 
-    public H2Bootstrap(ContaRepository contaRepository, ClienteRepository clienteRepository, PasswordEncoder passwordEncoder) {
-        this.contaRepository = contaRepository;
-        this.clienteRepository = clienteRepository;
+    @Autowired
+    public H2Bootstrap(ContaService contaService, ClienteService clienteService, PasswordEncoder passwordEncoder) {
+        this.contaService = contaService;
+        this.clienteService = clienteService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -45,7 +48,7 @@ public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         cliente.setEndereco(gerarEndereco());
         cliente.setEmails(gerarEmails());
         cliente.setTelefones(gerarTelefones());
-        this.clienteRepository.save(cliente);
+        this.clienteService.salvarCliente(cliente);
 
         // Cadastrando roles e contas
         Role roleAdmin = new Role("ADMIN");
@@ -55,7 +58,7 @@ public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         contaAdmin.setSenha(passwordEncoder.encode("123456"));
         contaAdmin.setAtiva(true);
         contaAdmin.setRoles(Arrays.asList(roleAdmin));
-        this.contaRepository.save(contaAdmin);
+        this.contaService.criarConta(contaAdmin);
 
         System.out.println("Carga de dados efetuada com sucesso!");
         System.out.println("Finalizando carga de dados...\n");
