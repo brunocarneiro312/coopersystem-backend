@@ -1,0 +1,5 @@
+global:
+  config:
+    client:
+      domain: http://localhost
+      port: 3000

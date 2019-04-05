@@ -33,4 +33,8 @@ public class Endereco {
     @Column(name = "COMPLEMENTO")
     private String complemento;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_CLIENTE")
+    private Cliente cliente;
+
 }

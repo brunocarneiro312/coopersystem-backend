@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,5 +26,13 @@ public class Cliente {
     @Column(name = "CPF", length = 11, unique = true, nullable = false)
     private String cpf;
 
+    @OneToOne(mappedBy = "cliente")
+    private Endereco endereco;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Telefone> telefones;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Email> emails;
 
 }

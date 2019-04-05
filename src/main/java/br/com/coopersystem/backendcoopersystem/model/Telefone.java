@@ -17,6 +17,11 @@ public class Telefone {
     private Long id;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "TIPO_TELEFONE")
     private TipoTelefoneEnum tipoTelefoneEnum;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_CLIENTE")
+    private Cliente cliente;
 
 }

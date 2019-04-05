@@ -19,4 +19,7 @@ public class Email {
     @Column(name = "EMAIL")
     private String email;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_CLIENTE")
+    private Cliente cliente;
 }
