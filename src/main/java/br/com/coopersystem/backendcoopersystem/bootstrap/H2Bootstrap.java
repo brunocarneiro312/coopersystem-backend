@@ -2,8 +2,6 @@ package br.com.coopersystem.backendcoopersystem.bootstrap;
 
 import br.com.coopersystem.backendcoopersystem.enums.TipoTelefoneEnum;
 import br.com.coopersystem.backendcoopersystem.model.*;
-import br.com.coopersystem.backendcoopersystem.repository.ClienteRepository;
-import br.com.coopersystem.backendcoopersystem.repository.ContaRepository;
 import br.com.coopersystem.backendcoopersystem.service.ClienteService;
 import br.com.coopersystem.backendcoopersystem.service.ContaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +49,8 @@ public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         this.clienteService.salvarCliente(cliente);
 
         // Cadastrando roles e contas
-        Role roleAdmin = new Role("ADMIN");
-        Role roleUser = new Role("USER");
+        Role roleAdmin = new Role("ROLE_ADMIN");
+        Role roleUser = new Role("ROLE_USER");
         Conta contaAdmin = new Conta();
         contaAdmin.setUsuario("admin");
         contaAdmin.setSenha(passwordEncoder.encode("123456"));

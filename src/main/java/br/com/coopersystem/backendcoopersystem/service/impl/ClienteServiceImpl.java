@@ -38,7 +38,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente alterarCliente(Cliente cliente) {
-        return clienteRepository.saveAndFlush(cliente);
+        return clienteRepository.save(cliente);
     }
 
     @Override

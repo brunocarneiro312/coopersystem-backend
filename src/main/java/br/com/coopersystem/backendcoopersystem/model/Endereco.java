@@ -1,5 +1,6 @@
 package br.com.coopersystem.backendcoopersystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -55,6 +56,7 @@ public class Endereco {
     @Column(name = "COMPLEMENTO")
     private String complemento;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "endereco")
     private Cliente cliente;
 
