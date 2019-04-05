@@ -1,14 +1,13 @@
 package br.com.coopersystem.backendcoopersystem.bootstrap;
 
 import br.com.coopersystem.backendcoopersystem.enums.TipoTelefoneEnum;
-import br.com.coopersystem.backendcoopersystem.model.Cliente;
-import br.com.coopersystem.backendcoopersystem.model.Email;
-import br.com.coopersystem.backendcoopersystem.model.Endereco;
-import br.com.coopersystem.backendcoopersystem.model.Telefone;
+import br.com.coopersystem.backendcoopersystem.model.*;
 import br.com.coopersystem.backendcoopersystem.repository.ClienteRepository;
+import br.com.coopersystem.backendcoopersystem.repository.ContaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,11 +21,16 @@ import java.util.List;
 @Component
 public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
+    private ContaRepository contaRepository;
+
     private ClienteRepository clienteRepository;
 
-    @Autowired
-    public H2Bootstrap(ClienteRepository clienteRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    public H2Bootstrap(ContaRepository contaRepository, ClienteRepository clienteRepository, PasswordEncoder passwordEncoder) {
+        this.contaRepository = contaRepository;
         this.clienteRepository = clienteRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -34,14 +38,24 @@ public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         System.out.println("\nIniciando carga de dados no banco de dados H2...");
 
+        // Cadastrando cliente...
         Cliente cliente = new Cliente();
         cliente.setNome("Bruno de Souza Ferreira Carneiro");
         cliente.setCpf("00825346169");
         cliente.setEndereco(gerarEndereco());
         cliente.setEmails(gerarEmails());
         cliente.setTelefones(gerarTelefones());
-
         this.clienteRepository.save(cliente);
+
+        // Cadastrando roles e contas
+        Role roleAdmin = new Role("ADMIN");
+        Role roleUser = new Role("USER");
+        Conta contaAdmin = new Conta();
+        contaAdmin.setUsuario("admin");
+        contaAdmin.setSenha(passwordEncoder.encode("123456"));
+        contaAdmin.setAtiva(true);
+        contaAdmin.setRoles(Arrays.asList(roleAdmin));
+        this.contaRepository.save(contaAdmin);
 
         System.out.println("Carga de dados efetuada com sucesso!");
         System.out.println("Finalizando carga de dados...\n");
@@ -54,8 +68,7 @@ public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
                 "sqn312 bl k",
                 "asa norte",
                 "brasília",
-                "DF",
-                "102");
+                "DF");
     }
 
     private List<Telefone> gerarTelefones() {

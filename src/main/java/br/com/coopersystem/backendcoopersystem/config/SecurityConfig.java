@@ -1,5 +1,6 @@
 package br.com.coopersystem.backendcoopersystem.config;
 
+import br.com.coopersystem.backendcoopersystem.repository.ContaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,11 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication()
-//                .dataSource(dataSource)
-//                .passwordEncoder(passwordEncoder())
-//                .usersByUsernameQuery(UserRespository.usersByUsersnameQuery)
-//                .authoritiesByUsernameQuery(UserRespository.authoritiesByUsernameQuery);
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery(ContaRepository.usersByUsersnameQuery)
+                .authoritiesByUsernameQuery(ContaRepository.authoritiesByUsernameQuery);
     }
 
     @Override
