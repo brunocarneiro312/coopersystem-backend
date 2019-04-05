@@ -45,6 +45,7 @@ public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         System.out.println("Carga de dados efetuada com sucesso!");
         System.out.println("Finalizando carga de dados...\n");
+
     }
 
     private Endereco gerarEndereco() {
