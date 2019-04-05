@@ -50,13 +50,24 @@ public class H2Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         // Cadastrando roles e contas
         Role roleAdmin = new Role("ROLE_ADMIN");
-        Role roleUser = new Role("ROLE_USER");
+        Role roleUser = new Role("ROLE_COMUM");
+
+        // conta admin
         Conta contaAdmin = new Conta();
         contaAdmin.setUsuario("admin");
         contaAdmin.setSenha(passwordEncoder.encode("123456"));
         contaAdmin.setAtiva(true);
         contaAdmin.setRoles(Arrays.asList(roleAdmin));
+
+        // conta comum
+        Conta contaComum = new Conta();
+        contaComum.setUsuario("comum");
+        contaComum.setSenha(passwordEncoder.encode("123456"));
+        contaComum.setAtiva(true);
+        contaComum.setRoles(Arrays.asList(roleUser));
+
         this.contaService.criarConta(contaAdmin);
+        this.contaService.criarConta(contaComum);
 
         System.out.println("Carga de dados efetuada com sucesso!");
         System.out.println("Finalizando carga de dados...\n");

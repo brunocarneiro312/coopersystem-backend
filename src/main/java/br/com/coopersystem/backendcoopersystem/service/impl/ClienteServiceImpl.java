@@ -4,6 +4,7 @@ import br.com.coopersystem.backendcoopersystem.model.Cliente;
 import br.com.coopersystem.backendcoopersystem.repository.ClienteRepository;
 import br.com.coopersystem.backendcoopersystem.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
