@@ -19,7 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 import javax.sql.DataSource;
 import java.util.Arrays;
 
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${global.config.client.domain}")
