@@ -1,9 +1,12 @@
 package br.com.coopersystem.backendcoopersystem.security.controller;
 
+import br.com.coopersystem.backendcoopersystem.model.security.Authority;
+import br.com.coopersystem.backendcoopersystem.model.security.User;
 import br.com.coopersystem.backendcoopersystem.security.JwtAuthenticationRequest;
 import br.com.coopersystem.backendcoopersystem.security.JwtTokenUtil;
 import br.com.coopersystem.backendcoopersystem.security.JwtUser;
 import br.com.coopersystem.backendcoopersystem.security.service.JwtAuthenticationResponse;
+import br.com.coopersystem.backendcoopersystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,11 +16,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,6 +31,7 @@ import java.util.Objects;
  * A autenticação utiliza JWT (JSON Web Token)
  */
 @RestController
+@CrossOrigin(origins = "*")
 public class AuthenticationRestController {
 
     @Value("${jwt.header}")
@@ -35,6 +42,9 @@ public class AuthenticationRestController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     @Qualifier("jwtUserDetailsService")
@@ -48,7 +58,17 @@ public class AuthenticationRestController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        User loggedUser = this.userService.buscarPorUsername(userDetails.getUsername());
+
+        JwtUser jwtUser = new JwtUser(loggedUser.getId(),
+                loggedUser.getUsername(),
+                loggedUser.getNome(),
+                "<secret>",
+                loggedUser.getEmails(),
+                userDetails.getAuthorities(),
+                loggedUser.getAtivo());
+
+        return ResponseEntity.ok(new JwtAuthenticationResponse(token, jwtUser));
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
@@ -60,7 +80,7 @@ public class AuthenticationRestController {
 
         if (jwtTokenUtil.canTokenBeRefreshed(token)) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken, user));
         } else {
             return ResponseEntity.badRequest().body(null);
         }

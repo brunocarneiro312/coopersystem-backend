@@ -16,4 +16,5 @@ public interface UserService {
 
     List<User> listar();
 
+    User buscarPorUsername(String username);
 }

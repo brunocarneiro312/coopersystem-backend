@@ -103,6 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         HttpMethod.GET,
                         "/",
+                        "/auth/**",
                         "/*.html",
                         "/favicon.ico",
                         "/**/*.html",

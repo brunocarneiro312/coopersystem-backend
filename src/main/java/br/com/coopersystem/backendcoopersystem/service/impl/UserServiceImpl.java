@@ -43,4 +43,9 @@ public class UserServiceImpl implements UserService {
     public List<User> listar() {
         return userRepository.findAll();
     }
+
+    @Override
+    public User buscarPorUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
