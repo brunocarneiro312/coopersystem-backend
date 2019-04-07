@@ -23,7 +23,6 @@ public class UserRestAPI {
     private UserService userService;
 
     @GetMapping
-    @PreAuthorize("hasRole('COMUM')")
     public ResponseEntity<List<User>> listarUsuarios() {
 
         List<User> users = this.userService.listar();
@@ -37,7 +36,6 @@ public class UserRestAPI {
     }
 
     @GetMapping("/{idUser}")
-    @PreAuthorize("hasRole('COMUM')")
     public ResponseEntity<User> buscarUsuario(@PathVariable("idUser") Long idUser) {
 
         User user = this.userService.buscarPorId(idUser);
