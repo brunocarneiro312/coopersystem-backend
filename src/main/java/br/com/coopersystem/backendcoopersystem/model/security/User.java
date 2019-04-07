@@ -1,24 +1,18 @@
 package br.com.coopersystem.backendcoopersystem.model.security;
 
-import java.util.Date;
-import java.util.List;
+import br.com.coopersystem.backendcoopersystem.model.Email;
+import br.com.coopersystem.backendcoopersystem.model.Endereco;
+import br.com.coopersystem.backendcoopersystem.model.Telefone;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "USER")
 public class User {
@@ -39,29 +33,17 @@ public class User {
     @Size(min = 4, max = 100)
     private String password;
 
-    @Column(name = "FIRSTNAME", length = 50)
+    @Column(name = "NOME", length = 100, nullable = false)
     @NotNull
-    @Size(min = 4, max = 50)
-    private String firstname;
+    @Size(min = 3, max = 100)
+    private String nome;
 
-    @Column(name = "LASTNAME", length = 50)
-    @NotNull
-    @Size(min = 4, max = 50)
-    private String lastname;
+    @Column(name = "CPF", length = 11, unique = true, nullable = false)
+    private String cpf;
 
-    @Column(name = "EMAIL", length = 50)
+    @Column(name = "ATIVO")
     @NotNull
-    @Size(min = 4, max = 50)
-    private String email;
-
-    @Column(name = "ENABLED")
-    @NotNull
-    private Boolean enabled;
-
-    @Column(name = "LASTPASSWORDRESETDATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
-    private Date lastPasswordResetDate;
+    private Boolean ativo;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -70,75 +52,25 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
     private List<Authority> authorities;
 
-    public Long getId() {
-        return id;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "USER_ENDERECO",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "EMAIL_ID", referencedColumnName = "ID")})
+    private Endereco endereco;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "USER_TELEFONE",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "TELEFONE_ID", referencedColumnName = "ID")})
+    private List<Telefone> telefones;
 
-    public String getUsername() {
-        return username;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "USER_EMAIL",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "EMAIL_ID", referencedColumnName = "ID")})
+    private List<Email> emails;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public List<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public Date getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
-    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
-    }
 }

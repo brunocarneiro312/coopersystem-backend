@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ClienteServiceImpl implements ClienteService {
+public class ClienteServiceImpl /*implements ClienteService*/ {
 
-    private ClienteRepository clienteRepository;
+    /*private ClienteRepository clienteRepository;
 
     @Autowired
     public ClienteServiceImpl(ClienteRepository clienteRepository) {
@@ -50,5 +50,5 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public List<Cliente> buscarClientes() {
         return clienteRepository.findAll();
-    }
+    }*/
 }

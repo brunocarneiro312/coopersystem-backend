@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
-@Table(name = "TB_CONTA")
+//@Entity
+//@Table(name = "TB_CONTA")
 public class Conta {
 
     @Id

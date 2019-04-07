@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "TB_EMAIL")
+@Table(name = "EMAIL")
 public class Email {
 
     public Email(@javax.validation.constraints.Email String email) {
@@ -20,7 +20,7 @@ public class Email {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_email")
     @SequenceGenerator(name = "sequence_email", sequenceName = "seq_email")
-    @Column(name = "ID_EMAIL")
+    @Column(name = "ID")
     private Long id;
 
     @javax.validation.constraints.Email

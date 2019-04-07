@@ -1,5 +1,6 @@
 package br.com.coopersystem.backendcoopersystem.model;
 
+import br.com.coopersystem.backendcoopersystem.model.security.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "TB_ENDERECO")
+@Table(name = "ENDERECO")
 public class Endereco {
 
     public Endereco(String cep, String logradouro, String bairro, String cidade, String uf, String complemento) {
@@ -35,7 +36,7 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_endereco")
     @SequenceGenerator(name = "sequence_endereco", sequenceName = "seq_enderco")
-    @Column(name = "ID_ENDERECO")
+    @Column(name = "ID")
     private Long id;
 
     @Column(name = "CEP", nullable = false)
@@ -58,6 +59,6 @@ public class Endereco {
 
     @JsonIgnore
     @OneToOne(mappedBy = "endereco")
-    private Cliente cliente;
+    private User user;
 
 }

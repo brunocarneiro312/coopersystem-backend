@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ContaServiceImpl implements ContaService {
+public class ContaServiceImpl /*implements ContaService*/ {
 
-    private ContaRepository contaRepository;
+    /*private ContaRepository contaRepository;
 
     @Autowired
     public ContaServiceImpl(ContaRepository contaRepository) {
@@ -49,5 +49,5 @@ public class ContaServiceImpl implements ContaService {
     @Override
     public List<Conta> buscarContas() {
         return this.contaRepository.findAll();
-    }
+    }*/
 }

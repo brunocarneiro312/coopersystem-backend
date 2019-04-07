@@ -17,13 +17,11 @@ public final class JwtUserFactory {
         return new JwtUser(
                 user.getId(),
                 user.getUsername(),
-                user.getFirstname(),
-                user.getLastname(),
-                user.getEmail(),
+                user.getNome(),
                 user.getPassword(),
+                user.getEmails(),
                 mapToGrantedAuthorities(user.getAuthorities()),
-                user.getEnabled(),
-                user.getLastPasswordResetDate()
+                user.getAtivo()
         );
     }
 

@@ -17,7 +17,7 @@ public class Authority {
     @Column(name = "NAME", length = 50)
     @NotNull
     @Enumerated(EnumType.STRING)
-    private AuthorityName name;
+    private RoleEnum name;
 
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
     private List<User> users;
@@ -30,11 +30,11 @@ public class Authority {
         this.id = id;
     }
 
-    public AuthorityName getName() {
+    public RoleEnum getName() {
         return name;
     }
 
-    public void setName(AuthorityName name) {
+    public void setName(RoleEnum name) {
         this.name = name;
     }
 

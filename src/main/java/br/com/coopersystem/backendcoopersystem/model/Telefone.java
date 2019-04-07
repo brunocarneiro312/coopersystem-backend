@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "TB_TELEFONE")
+@Table(name = "TELEFONE")
 public class Telefone {
 
     public Telefone(TipoTelefoneEnum tipoTelefoneEnum, String numero) {
@@ -22,7 +22,7 @@ public class Telefone {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_telefone")
     @SequenceGenerator(name = "sequence_telefone", sequenceName = "seq_telefone")
-    @Column(name = "ID_TELEFONE")
+    @Column(name = "ID")
     private Long id;
 
     @Enumerated(EnumType.ORDINAL)

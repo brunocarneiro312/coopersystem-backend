@@ -3,7 +3,7 @@ package br.com.coopersystem.backendcoopersystem.repository;
 import br.com.coopersystem.backendcoopersystem.model.Conta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ContaRepository extends JpaRepository<Conta, Long> {
+public interface ContaRepository /*extends JpaRepository<Conta, Long>*/ {
 
     String usersByUsersnameQuery = "select conta.usuario, conta.senha, conta.ativa" +
             " from tb_conta conta where conta.usuario = ?";

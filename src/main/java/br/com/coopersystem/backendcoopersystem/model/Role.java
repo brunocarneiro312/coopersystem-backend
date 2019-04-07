@@ -10,8 +10,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "TB_ROLE")
+//@Entity
+//@Table(name = "TB_ROLE")
 public class Role {
 
     public Role(String roleName) {
