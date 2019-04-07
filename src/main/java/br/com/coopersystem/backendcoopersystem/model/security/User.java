@@ -36,12 +36,13 @@ public class User {
     @Size(min = 4, max = 100)
     private String password;
 
-    @Column(name = "NOME", length = 100, nullable = false)
-    @NotNull
-    @Size(min = 3, max = 100)
+    @Column(name = "NOME", length = 100)
+    @NotNull // Campo obrigatório, conforme a regra especifica
+    @Size(min = 3, max = 100) // minimo de 3 e máximo de 100, conforme a regra especifica
     private String nome;
 
-    @Column(name = "CPF", length = 11, unique = true, nullable = false)
+    @Column(name = "CPF", length = 11, unique = true)
+    @NotNull // Campo obrigatório, conforme a regra especifica
     private String cpf;
 
     @Column(name = "ATIVO")

@@ -3,6 +3,7 @@ package br.com.coopersystem.backendcoopersystem.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entidade Email
@@ -25,8 +26,9 @@ public class Email {
     @Column(name = "ID")
     private Long id;
 
-    @javax.validation.constraints.Email
+    @javax.validation.constraints.Email // Deve ser um e-mail válido
     @Column(name = "EMAIL")
+    @NotNull // Campo obrigatório, conforme a regra especifica
     private String email;
 
 }

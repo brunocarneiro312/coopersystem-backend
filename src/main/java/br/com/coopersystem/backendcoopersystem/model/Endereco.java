@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entidade Endereco
@@ -41,21 +42,26 @@ public class Endereco {
     private Long id;
 
     @Column(name = "CEP", nullable = false)
+    @NotNull // Campo obrigatório, conforme a regra especifica
     private String cep;
 
     @Column(name = "LOGRADOURO", nullable = false)
+    @NotNull // Campo obrigatório, conforme a regra especifica
     private String logradouro;
 
     @Column(name = "BAIRRO", nullable = false)
+    @NotNull // Campo obrigatório, conforme a regra especifica
     private String bairro;
 
     @Column(name = "CIDADE", nullable = false)
+    @NotNull // Campo obrigatório, conforme a regra especifica
     private String cidade;
 
     @Column(name = "UF", nullable = false)
+    @NotNull // Campo obrigatório, conforme a regra especifica
     private String uf;
 
-    @Column(name = "COMPLEMENTO")
+    @Column(name = "COMPLEMENTO") // Complemento pode ser nulo, conforme regra.
     private String complemento;
 
     @JsonIgnore
