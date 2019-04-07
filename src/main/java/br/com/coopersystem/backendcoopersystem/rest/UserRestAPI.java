@@ -50,7 +50,7 @@ public class UserRestAPI {
         }
     }
 
-    @PostMapping
+    @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> cadastrarUsuario(@RequestBody User user) {
 
@@ -64,7 +64,7 @@ public class UserRestAPI {
         }
     }
 
-    @DeleteMapping("/{idUser}")
+    @RequestMapping(value = "/{idUser}", method = RequestMethod.DELETE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> deletarUsuario(@PathVariable("idUser") Long idUser) {
 
