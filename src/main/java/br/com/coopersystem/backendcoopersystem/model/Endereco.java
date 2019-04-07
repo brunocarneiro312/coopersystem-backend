@@ -33,7 +33,7 @@ public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_endereco")
-    @SequenceGenerator(name = "sequence_endereco", sequenceName = "seq_enderco")
+    @SequenceGenerator(name = "sequence_endereco", sequenceName = "seq_enderco", allocationSize = 1, initialValue = 3)
     @Column(name = "ID")
     private Long id;
 

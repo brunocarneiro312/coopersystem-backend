@@ -44,6 +44,19 @@ public class UserRestService {
         }
     }
 
+    @PostMapping
+    public ResponseEntity<User> cadastrarUsuario(@RequestBody User user) {
+
+        User usuarioSalvo = this.userService.cadastrar(user);
+
+        if (usuarioSalvo != null) {
+            return ResponseEntity.ok(user);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
     @DeleteMapping("/{idUser}")
     public ResponseEntity<User> deletarUsuario(@PathVariable("idUser") Long idUser) {
 

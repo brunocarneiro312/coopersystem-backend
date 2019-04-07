@@ -20,7 +20,7 @@ public class Telefone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_telefone")
-    @SequenceGenerator(name = "sequence_telefone", sequenceName = "seq_telefone")
+    @SequenceGenerator(name = "sequence_telefone", sequenceName = "seq_telefone", allocationSize = 1, initialValue = 7)
     @Column(name = "ID")
     private Long id;
 
