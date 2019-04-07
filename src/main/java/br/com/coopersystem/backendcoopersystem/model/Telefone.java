@@ -5,6 +5,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Entidade Telefone
+ */
 @Getter
 @Setter
 @NoArgsConstructor

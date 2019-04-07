@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
+/**
+ * API utilizada para fins de autenticação.
+ * A autenticação utiliza JWT (JSON Web Token)
+ */
 @RestController
 public class AuthenticationRestController {
 

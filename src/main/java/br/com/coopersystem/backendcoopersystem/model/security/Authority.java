@@ -6,6 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * Entidade Authority (representa a Role)
+ */
 @Entity
 @Table(name = "AUTHORITY")
 public class Authority {

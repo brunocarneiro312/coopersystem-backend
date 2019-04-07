@@ -1,5 +1,8 @@
 package br.com.coopersystem.backendcoopersystem.enums;
 
+/**
+ * Enum que define o tipo de telefone
+ */
 public enum TipoTelefoneEnum {
 
     RESIDENCIAL(0),

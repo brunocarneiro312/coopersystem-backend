@@ -21,6 +21,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Classe de configuração do SpringSecurity
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -32,7 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
 
-    // Custom JWT based security filter
     @Autowired
     JwtAuthorizationTokenFilter authenticationTokenFilter;
 
@@ -63,35 +65,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // we don't need CSRF because our token is invulnerable
+
+                // A token JWT é invulnerável a esse tipo de ataque. Desabilitando (bruno.carneiro)
                 .csrf().disable()
-
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-
-                // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
                 .authorizeRequests()
 
-                // Un-secure H2 Database
+                // Vamos permitir o acesso irrestrito ao H2
                 .antMatchers("/h2-console/**/**").permitAll()
 
+                // Permitindo o acesso irrestrito ao recurso de autenticação
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity
                 .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        // disable page caching
+        // Desabilitando cache...
         httpSecurity
                 .headers()
-                .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
+                .frameOptions().sameOrigin()  // Habilitando iframe na mesma origem (para o H2)
                 .cacheControl();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // AuthenticationTokenFilter will ignore the below paths
         web
                 .ignoring()
                 .antMatchers(
@@ -99,7 +98,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         authenticationPath
                 )
 
-                // allow anonymous resource requests
                 .and()
                 .ignoring()
                 .antMatchers(
@@ -112,7 +110,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 )
 
-                // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
                 .and()
                 .ignoring()
                 .antMatchers("/h2-console/**/**");

@@ -6,6 +6,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Entidade Endereco
+ */
 @Getter
 @Setter
 @AllArgsConstructor

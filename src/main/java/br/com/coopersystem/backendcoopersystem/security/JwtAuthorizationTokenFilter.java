@@ -29,40 +29,47 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
     private final String tokenHeader;
 
-    public JwtAuthorizationTokenFilter(@Qualifier("jwtUserDetailsService") UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, @Value("${jwt.header}") String tokenHeader) {
+    public JwtAuthorizationTokenFilter(@Qualifier("jwtUserDetailsService") UserDetailsService userDetailsService,
+                                       JwtTokenUtil jwtTokenUtil,
+                                       @Value("${jwt.header}") String tokenHeader) {
+
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.tokenHeader = tokenHeader;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        logger.debug("processing authentication for '{}'", request.getRequestURL());
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain) throws ServletException, IOException {
+
+        logger.debug("Processando autenticação para '{}'", request.getRequestURL());
 
         final String requestHeader = request.getHeader(this.tokenHeader);
 
         String username = null;
         String authToken = null;
+
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
             authToken = requestHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
-                logger.error("an error occurred during getting username from token", e);
+                logger.error("Um erro aconteceu durante a obtenção do username do token", e);
             } catch (ExpiredJwtException e) {
-                logger.warn("the token is expired and not valid anymore", e);
+                logger.warn("Token expirada.", e);
             }
         } else {
-            logger.warn("couldn't find bearer string, will ignore the header");
+            logger.warn("Não pode encontrar a string Bearer no token, ignorando header...");
         }
 
-        logger.debug("checking authentication for user '{}'", username);
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            logger.debug("security context was null, so authorizing user");
+        logger.debug("Verificando autenticação para usuário '{}'", username);
 
-            // It is not compelling necessary to load the use details from the database. You could also store the information
-            // in the token and read it from it. It's up to you ;)
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            logger.debug("SecurityContext está nulo, autorizando usuário");
             UserDetails userDetails;
+
             try {
                 userDetails = userDetailsService.loadUserByUsername(username);
             } catch (UsernameNotFoundException e) {
@@ -70,13 +77,14 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                 return;
             }
 
-
-            // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
-            // the database compellingly. Again it's up to you ;)
             if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                logger.info("authorized user '{}', setting security context", username);
+                logger.info("Usuário autorizado '{}'", username);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

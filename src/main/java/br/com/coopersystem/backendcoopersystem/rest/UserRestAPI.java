@@ -6,19 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * API de usuários
+ */
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserRestService {
+public class UserRestAPI {
 
     @Autowired
     private UserService userService;
 
     @GetMapping
+    @PreAuthorize("hasRole('COMUM')")
     public ResponseEntity<List<User>> listarUsuarios() {
 
         List<User> users = this.userService.listar();
@@ -32,6 +37,7 @@ public class UserRestService {
     }
 
     @GetMapping("/{idUser}")
+    @PreAuthorize("hasRole('COMUM')")
     public ResponseEntity<User> buscarUsuario(@PathVariable("idUser") Long idUser) {
 
         User user = this.userService.buscarPorId(idUser);
@@ -45,6 +51,7 @@ public class UserRestService {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> cadastrarUsuario(@RequestBody User user) {
 
         User usuarioSalvo = this.userService.cadastrar(user);
@@ -58,6 +65,7 @@ public class UserRestService {
     }
 
     @DeleteMapping("/{idUser}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> deletarUsuario(@PathVariable("idUser") Long idUser) {
 
         User user = this.userService.buscarPorId(idUser);
