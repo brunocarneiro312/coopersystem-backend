@@ -1,13 +1,12 @@
 package br.com.coopersystem.backendcoopersystem.model;
 
 import br.com.coopersystem.backendcoopersystem.enums.TipoTelefoneEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

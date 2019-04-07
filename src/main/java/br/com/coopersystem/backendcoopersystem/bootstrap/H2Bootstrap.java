@@ -1,18 +1,6 @@
 package br.com.coopersystem.backendcoopersystem.bootstrap;
 
-import br.com.coopersystem.backendcoopersystem.enums.TipoTelefoneEnum;
-import br.com.coopersystem.backendcoopersystem.model.*;
-import br.com.coopersystem.backendcoopersystem.service.ClienteService;
-import br.com.coopersystem.backendcoopersystem.service.ContaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Para efetuar os testes de integração com a base de dados, optei por utilizar o H2.

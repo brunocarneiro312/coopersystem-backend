@@ -1,5 +1,7 @@
 package br.com.coopersystem.backendcoopersystem.model.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -19,6 +21,7 @@ public class Authority {
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
     private List<User> users;
 
