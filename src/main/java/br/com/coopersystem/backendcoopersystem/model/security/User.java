@@ -56,7 +56,7 @@ public class User {
     @JoinTable(
             name = "USER_ENDERECO",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "EMAIL_ID", referencedColumnName = "ID")})
+            inverseJoinColumns = {@JoinColumn(name = "ENDERECO_ID", referencedColumnName = "ID")})
     private Endereco endereco;
 
     @OneToMany(cascade = CascadeType.ALL)
