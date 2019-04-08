@@ -4,3 +4,5 @@
 2 - Execute o projeto com o comando "mvn spring-boot:run" <br/>
 
 * Se preferir, compile o projeto com o comando "mvn clean package" e depois <br /> execute o jar na pasta "/target" com java -jar
+
+* A autententicação é <i>STATELESS</i> e feita através de autorização via token JWT.
