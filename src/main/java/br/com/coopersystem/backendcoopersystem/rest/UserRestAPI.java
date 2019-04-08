@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class UserRestAPI {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public ResponseEntity<List<User>> listarUsuarios() {
@@ -52,14 +56,22 @@ public class UserRestAPI {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> cadastrarUsuario(@RequestBody User user) {
 
-        User usuarioSalvo = this.userService.cadastrar(user);
+        try {
 
-        if (usuarioSalvo != null) {
-            return ResponseEntity.ok(user);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User usuarioSalvo = this.userService.cadastrar(user);
+
+            if (usuarioSalvo != null) {
+                return ResponseEntity.ok(user);
+            }
+            else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
         }
-        else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        catch (Exception e) {
+            e.printStackTrace();
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/{idUser}", method = RequestMethod.DELETE)

@@ -42,7 +42,7 @@ public class User {
     private String nome;
 
     @Column(name = "CPF", length = 11, unique = true)
-    @NotNull // Campo obrigatório, conforme a regra especifica
+    @NotNull(message = "O CPF é obrigatório.") // Campo obrigatório, conforme a regra especifica
     private String cpf;
 
     @Column(name = "ATIVO")

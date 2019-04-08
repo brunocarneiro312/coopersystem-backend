@@ -5,9 +5,9 @@ package br.com.coopersystem.backendcoopersystem.enums;
  */
 public enum TipoTelefoneEnum {
 
-    RESIDENCIAL(0),
-    COMERCIAL(1),
-    CELULAR(2);
+    CELULAR(0),
+    RESIDENCIAL(1),
+    COMERCIAL(2);
 
     private int tipoTelefone;
 
