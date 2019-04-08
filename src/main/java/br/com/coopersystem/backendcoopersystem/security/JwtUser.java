@@ -15,7 +15,8 @@ public class JwtUser implements UserDetails {
     private final String nome;
     private final String password;
     private final List<Email> emails;
-    private final Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
+    private String authority;
     private final boolean ativo;
 
     public JwtUser(Long id,
@@ -34,6 +35,23 @@ public class JwtUser implements UserDetails {
         this.authorities = authorities;
         this.ativo = ativo;
     }
+
+//    public JwtUser(Long id,
+//                   String username,
+//                   String nome,
+//                   String password,
+//                   List<Email> emails,
+//                   String authority,
+//                   boolean ativo) {
+//
+//        this.id = id;
+//        this.username = username;
+//        this.nome = nome;
+//        this.password = password;
+//        this.emails = emails;
+//        this.authority = authority;
+//        this.ativo = ativo;
+//    }
 
     @JsonIgnore
     public Long getId() {

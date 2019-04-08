@@ -1,6 +1,5 @@
 package br.com.coopersystem.backendcoopersystem.security.controller;
 
-import br.com.coopersystem.backendcoopersystem.model.security.Authority;
 import br.com.coopersystem.backendcoopersystem.model.security.User;
 import br.com.coopersystem.backendcoopersystem.security.JwtAuthenticationRequest;
 import br.com.coopersystem.backendcoopersystem.security.JwtTokenUtil;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -60,12 +58,14 @@ public class AuthenticationRestController {
 
         User loggedUser = this.userService.buscarPorUsername(userDetails.getUsername());
 
+        ArrayList<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
+
         JwtUser jwtUser = new JwtUser(loggedUser.getId(),
                 loggedUser.getUsername(),
                 loggedUser.getNome(),
                 "<secret>",
                 loggedUser.getEmails(),
-                userDetails.getAuthorities(),
+                authorities,
                 loggedUser.getAtivo());
 
         return ResponseEntity.ok(new JwtAuthenticationResponse(token, jwtUser));

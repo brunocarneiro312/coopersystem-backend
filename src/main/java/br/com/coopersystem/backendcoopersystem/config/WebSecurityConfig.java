@@ -87,6 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers()
                 .frameOptions().sameOrigin()  // Habilitando iframe na mesma origem (para o H2)
                 .cacheControl();
+
+        httpSecurity.headers().disable().cors();
     }
 
     @Override
