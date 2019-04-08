@@ -77,7 +77,6 @@ public class UserRestAPI {
     @RequestMapping(value = "/{idUser}", method = RequestMethod.DELETE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> deletarUsuario(@PathVariable("idUser") Long idUser) {
-
         User user = this.userService.buscarPorId(idUser);
         User deletedUser = this.userService.deletar(user);
 
