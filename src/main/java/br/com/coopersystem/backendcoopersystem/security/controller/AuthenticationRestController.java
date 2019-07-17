@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,9 +47,6 @@ public class AuthenticationRestController {
     private UserService userService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
@@ -56,28 +54,43 @@ public class AuthenticationRestController {
     public ResponseEntity<?> createAuthenticationToken(
             @RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
+        User user = this.userService.buscarPorUsername(authenticationRequest.getUsername());
 
-        User user = this.userService.buscarPorUserNameEPassword(
-                userDetails.getUsername(),
-                userDetails.getPassword());
+        if (user != null) {
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        User loggedUser = this.userService.buscarPorUsername(userDetails.getUsername());
+            boolean passwordMatches = passwordEncoder.matches(
+                    authenticationRequest.getPassword(),
+                    user.getPassword());
 
-        ArrayList<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
+            if (passwordMatches) {
 
-        JwtUser jwtUser = new JwtUser(loggedUser.getId(),
-                loggedUser.getUsername(),
-                loggedUser.getNome(),
-                "<secret>",
-                loggedUser.getEmails(),
-                authorities,
-                loggedUser.getAtivo());
+                final UserDetails userDetails = userDetailsService
+                        .loadUserByUsername(authenticationRequest.getUsername());
 
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token, jwtUser));
+                final String token = jwtTokenUtil.generateToken(userDetails);
+
+                User loggedUser = this.userService.buscarPorUsername(userDetails.getUsername());
+
+                ArrayList<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
+
+                JwtUser jwtUser = new JwtUser(loggedUser.getId(),
+                        loggedUser.getUsername(),
+                        loggedUser.getNome(),
+                        "<secret>",
+                        loggedUser.getEmails(),
+                        authorities,
+                        loggedUser.getAtivo());
+
+                return ResponseEntity.ok(new JwtAuthenticationResponse(token, jwtUser));
+            }
+
+        }
+
+
+
+        return new ResponseEntity<>("Bad Credentials", HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
