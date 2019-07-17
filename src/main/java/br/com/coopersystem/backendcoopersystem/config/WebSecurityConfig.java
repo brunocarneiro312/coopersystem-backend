@@ -94,27 +94,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring()
-                .antMatchers(
-                        HttpMethod.POST,
-                        authenticationPath
-                )
+            .ignoring()
+            .antMatchers(
+                    HttpMethod.POST,
+                    authenticationPath
+            )
 
-                .and()
-                .ignoring()
-                .antMatchers(
-                        HttpMethod.GET,
-                        "/",
-                        "/auth/**",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
-                )
+            .and()
+            .ignoring()
+            .antMatchers(
+                    HttpMethod.GET,
+                    "/",
+                    "/auth/**",
+                    "/*.html",
+                    "/favicon.ico",
+                    "/**/*.html",
+                    "/**/*.css",
+                    "/**/*.js"
+            )
 
-                .and()
-                .ignoring()
-                .antMatchers("/h2-console/**/**");
+            .and()
+            .ignoring()
+            .antMatchers("/h2-console/**/**");
     }
 }

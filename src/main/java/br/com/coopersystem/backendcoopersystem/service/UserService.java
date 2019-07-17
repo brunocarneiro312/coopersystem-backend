@@ -17,4 +17,6 @@ public interface UserService {
     List<User> listar();
 
     User buscarPorUsername(String username);
+
+    User buscarPorUserNameEPassword(String username, String password);
 }

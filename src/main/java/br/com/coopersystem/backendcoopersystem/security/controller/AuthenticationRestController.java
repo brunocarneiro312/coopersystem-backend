@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,15 +46,23 @@ public class AuthenticationRestController {
     private UserService userService;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "/auth", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
+    public ResponseEntity<?> createAuthenticationToken(
+            @RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authenticationRequest.getUsername());
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        User user = this.userService.buscarPorUserNameEPassword(
+                userDetails.getUsername(),
+                userDetails.getPassword());
+
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         User loggedUser = this.userService.buscarPorUsername(userDetails.getUsername());
@@ -96,6 +105,23 @@ public class AuthenticationRestController {
         Objects.requireNonNull(password);
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new AuthenticationException("Usuário não habilitado", e);
+        } catch (BadCredentialsException e) {
+            throw new AuthenticationException("Erro de autenticação", e);
+        }
+    }
+
+    private void authenticate(UserDetails userDetails) {
+        Objects.requireNonNull(userDetails.getUsername());
+        Objects.requireNonNull(userDetails.getPassword());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails.getUsername(),
+                            userDetails.getPassword(),
+                            userDetails.getAuthorities()));
+
         } catch (DisabledException e) {
             throw new AuthenticationException("Usuário não habilitado", e);
         } catch (BadCredentialsException e) {
